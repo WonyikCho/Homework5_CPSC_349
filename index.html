@@ -1,93 +1,100 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>coffeerun</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootst
-rap/3.3.6/css/bootstrap.min.css">
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
-<style>
-    form :focus:required:invalid{
-    border-color: #a94442;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        form :focus:required:invalid {
+          border-color: #a94442;
+        }
     </style>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
+    
+    <title>CoffeeRun</title>
 </head>
-<body class="container">
+<body>
     <header>
-    <h1>CoffeeRun</h1>
+        <h1>CoffeeRun</h1>
     </header>
+​
     <section>
         <div class="panel panel-default">
-        <div class="panel-body">
-        <form data-coffee-order="form">
-            <div class="form-group">
-                <label for="coffeeOrder">Coffee Order</label>
-                <input class="form-control" name="coffee" id="coffeeOrder" autofocus required  pattern="[a-zA-Z\s]+">
-                </div>
-
-                <div class="form-group">
-                    <label for="emailInput">Email</label>
-                    <input class="form-control" type="email" name="emailAddress"
-                    id="emailInput" value=""  placeholder="dr@who.com" required>
+            <div class="panel panel-body">
+                <form data-coffee-order="form" >
+                    <div class="form-group">
+                        <label for="coffeeOrder">Coffee Order</label>
+                        <input class="form-control" name="coffee" id="coffeeOrder" autofocus required pattern="[a-zA-Z\s]+" />
                     </div>
-
-
-                    <div class="radio">
-                        <label>
-                        <input type="radio" name="size" value="short">
-                        Short
-                        </label>
+                    <div class="form-group">
+                        <label for="emailInput">Email</label>                        
+                        
+                        <input class="form-control" type="email" name="emailAddress" id="emailInput" value="" placeholder="dr@who.com" required />
                         </div>
-                        <div class="radio">
-                        <label>
-                        <input type="radio" name="size" value="tall" checked>
-                        Tall
-                        </label>
-                        </div>
-                        <div class="radio">
-                        <label>
-                        <input type="radio" name="size" value="grande">
-                        Grande
-                        </label>
-                        </div>
-                        <div class="form-group">
-                            <label for="flavorShot">Flavor Shot</label>
-                            <select id="flavorShot" class="form-control" name="flavor">
+                    </div>
+                    <div class="radio"><label><input type="radio" name="size" value="short">Short</label></div>
+                    <div class="radio"><label><input type="radio" name="size" value="tall" checked>Tall</label></div>
+                    <div class="radio"><label><input type="radio" name="size" value="grande">Grande</label></div>
+                    <div class="form-group">
+                        <label for="flavorShot">Flavor Shot</label>
+                        <select id="flavorShot" class="form-control" name="flavor">
                             <option value="">None</option>
                             <option value="caramel">Caramel</option>
                             <option value="almond">Almond</option>
                             <option value="mocha">Mocha</option>
-                            </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="strengthLevel">Caffeine Rating</label>
-                                <input name="strength" id="strengthLevel" type="range" value="30">
-                                </div>
-                            <button type="submit" class="btn btn-default">Submit</button>
-                            <button type="reset" class="btn btn-default">Reset</button>
-                                
-                                
-        </form>
+                            <option value="pumpkin_spice">Pumpkin Spice</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="strengthLevel">Caffeine Rating</label>
+                        <input name="strength" id="strengthLevel" type="range" value="30">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                    <button type="reset" class="btn btn-default">Reset</button>
+                </form>
+​
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                      <h4>Pending Orders:</h4>
+                        <div data-coffee-order="checklist">
+                      </div>
+                    </div>
+                </div>
+            </div>  
         </div>
+    
+​
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    Payment Info
+                </h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+                placement
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal">Order</button>
+            </div>
         </div>
+        
+        </div>
+    </div>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-            <h4>Pending Orders:</h4>
-            <div data-coffee-order="checklist">
-             
-            </div>
-            </div>
-            </div>
-        </section>
-
-        <script>
+  <script>
             // Your web app's Firebase configuration
-            var firebaseConfig = {
+            var config = {
               apiKey: "AIzaSyCxRNGughg6aNRBAc2OSkgUpgfV2wm4FEk",
               authDomain: "cpsc349-hw5.firebaseapp.com",
               databaseURL: "https://cpsc349-hw5.firebaseio.com",
@@ -97,22 +104,22 @@ rap/3.3.6/css/bootstrap.min.css">
               appId: "1:291788044075:web:32f26dab570cac647e376e",
               measurementId: "G-52KMJWZRNS"
             };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
+            
+             firebase.initializeApp(config);
+             firebase.analytics();
             
           </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"
-        charset="utf-8"></script>   
-        
-        <script src="scripts/validation.js" charset="utf-8"></script>
-        <script src="scripts/checklist.js" charset="utf-8"></script>
-        <script src="scripts/formhandler.js" charset="utf-8"></script>
-        <script src="scripts/remotedatastore.js" charset="utf-8"></script>
-        <script src="scripts/datastore.js" charset="utf-8"></script>
-        <script src="scripts/truck.js" charset="utf-8"></script>
-        <script src="scripts/main.js" charset="utf-8"></script>
-        
-
+    
+    
+    <script src="scripts/app.js" charset="utf-8"></script>
+    <script src="scripts/validation.js" charset="utf-8"></script>
+    <script src="scripts/checklist.js" charset="utf-8"></script>
+    <script src="scripts/remotedatastore.js" charset="utf-8"></script>
+    <script src="scripts/firebasedatastore.js" charset="utf-8"></script>
+    <script src="scripts/formhandler.js" charset="utf-8"></script>
+    <script src="scripts/datastore.js" charset="utf-8"></script>
+    <script src="scripts/truck.js" charset="utf-8"></script>
+    <script src="scripts/main.js" charset="utf-8"></script>
 </body>
 </html>
+
